@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生日快乐！</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      }
+      body {
+        background: linear-gradient(-45deg, #ffb6c1, #ffcccb, #c9e9ff, #b2e0ff);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #333;
+      }
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .container {
+        background-color: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        padding: 40px 30px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+      .container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 1px,
+          transparent 1px
+        );
+        background-size: 30px 30px;
+        animation: float 20s linear infinite;
+        z-index: 0;
+      }
+      @keyframes float {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        100% {
+          transform: translate(-30px, -30px) rotate(360deg);
+        }
+      }
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+      h1 {
+        color: #e75480;
+        font-size: 3.2em;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+      h1 i {
+        animation: bounce 1.5s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+      }
+      .subtitle {
+        font-size: 1.3em;
+        color: #666;
+        margin-bottom: 30px;
+        line-height: 1.5;
+      }
+      #birthdayPerson {
+        font-weight: bold;
+        color: #e75480;
+        border-bottom: 2px dashed #ffb6c1;
+        padding-bottom: 2px;
+      }
+      .highlight-box {
+        background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+        border-radius: 18px;
+        padding: 25px;
+        margin: 30px 0;
+        border-left: 6px solid #e75480;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        text-align: left;
+      }
+      #dynamicMessage {
+        font-size: 1.8em;
+        line-height: 1.6;
+        color: #222;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+      }
+      .message-controls {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 25px 0 35px 0;
+      }
+      .msg-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(to right, #a5d8ff, #74c0fc);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(116, 192, 252, 0.3);
+      }
+      .msg-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(116, 192, 252, 0.5);
+      }
+      .msg-btn.heart {
+        background: linear-gradient(to right, #ffb6c1, #ff8fab);
+        box-shadow: 0 4px 10px rgba(255, 143, 171, 0.3);
+      }
+      .msg-btn.funny {
+        background: linear-gradient(to right, #ffd8a8, #ffa94d);
+        box-shadow: 0 4px 10px rgba(255, 169, 77, 0.3);
+      }
+      .countdown {
+        background: rgba(255, 182, 193, 0.15);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 30px auto;
+        max-width: 500px;
+        border: 2px dashed #ff8fab;
+      }
+      .countdown-title {
+        font-size: 1.2em;
+        color: #e75480;
+        margin-bottom: 15px;
+      }
+      #countdownTimer {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #333;
+        font-family: 'Courier New', monospace;
+      }
+      .unit {
+        font-size: 0.5em;
+        color: #666;
+        margin-left: 3px;
+      }
+      footer {
+        margin-top: 30px;
+        color: #888;
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
+      .heartbeat {
+        animation: heartbeat 1.2s ease-in-out infinite;
+      }
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.08);
+        }
+      }
+      /* 移动端优化 */
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          padding: 25px 20px;
+          border-radius: 20px;
+        }
+        h1 {
+          font-size: 2.2em;
+          gap: 10px;
+        }
+        .subtitle {
+          font-size: 1.1em;
+          margin-bottom: 20px;
+        }
+        .highlight-box {
+          padding: 20px 15px;
+          margin: 20px 0;
+          border-radius: 15px;
+        }
+        #dynamicMessage {
+          font-size: 1.4em;
+          min-height: 80px;
+          padding: 8px;
+          line-height: 1.5;
+        }
+        .message-controls {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 10px;
+          margin: 20px 0 25px 0;
+        }
+        .msg-btn {
+          width: 100%;
+          padding: 14px 20px;
+          font-size: 1em;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .countdown {
+          padding: 15px;
+          margin: 20px auto;
+          border-radius: 12px;
+        }
+        .countdown-title {
+          font-size: 1em;
+          margin-bottom: 12px;
+        }
+        #countdownTimer {
+          font-size: 1.8em;
+          word-spacing: 2px;
+        }
+        footer {
+          margin-top: 20px;
+          font-size: 0.85em;
+        }
+      }
+      
+      /* 小屏幕手机优化 */
+      @media (max-width: 480px) {
+        body {
+          padding: 8px;
+        }
+        .container {
+          padding: 20px 15px;
+          border-radius: 18px;
+        }
+        h1 {
+          font-size: 1.8em;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        h1 i {
+          font-size: 0.9em;
+        }
+        .subtitle {
+          font-size: 1em;
+          margin-bottom: 15px;
+        }
+        .highlight-box {
+          padding: 15px 12px;
+          margin: 15px 0;
+          border-radius: 12px;
+        }
+        #dynamicMessage {
+          font-size: 1.2em;
+          min-height: 70px;
+          padding: 6px;
+        }
+        .message-controls {
+          margin: 15px 0 20px 0;
+          gap: 8px;
+        }
+        .msg-btn {
+          padding: 12px 18px;
+          font-size: 0.95em;
+        }
+        .countdown {
+          padding: 12px;
+          margin: 15px auto;
+        }
+        .countdown-title {
+          font-size: 0.9em;
+          margin-bottom: 10px;
+        }
+        #countdownTimer {
+          font-size: 1.5em;
+        }
+        footer {
+          margin-top: 15px;
+          font-size: 0.8em;
+        }
+      }
+      
+      /* 横屏优化 */
+      @media (max-width: 768px) and (orientation: landscape) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          padding: 20px;
+          max-width: 90%;
+        }
+        h1 {
+          font-size: 2em;
+        }
+        #dynamicMessage {
+          font-size: 1.3em;
+          min-height: 60px;
+        }
+      }
+      
+      /* 触摸设备优化 */
+      @media (hover: none) and (pointer: coarse) {
+        .msg-btn:hover {
+          transform: none;
+        }
+        .msg-btn:active {
+          transform: scale(0.98);
+          opacity: 0.9;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="content">
+        <h1>
+          <i class="fas fa-birthday-cake"></i>
+          <span class="heartbeat">生 日 快 乐！</span>
+          <i class="fas fa-heart"></i>
+        </h1>
+        <p class="subtitle">Swtacl. 愿这特别的一天充满欢笑与惊喜！</p>
+        <div class="highlight-box">
+          <p id="dynamicMessage">
+            点击下面的按钮，选择一份送给你的专属祝福吧！
+          </p>
+        </div>
+        <div class="message-controls">
+          <button class="msg-btn heart" onclick="showMessage('heart')">
+            <i class="fas fa-heart"></i> 温馨祝福
+          </button>
+          <button class="msg-btn" onclick="showMessage('simple')">
+            <i class="fas fa-star"></i> 简单祝福
+          </button>
+          <button class="msg-btn funny" onclick="showMessage('funny')">
+            <i class="fas fa-laugh-beam"></i> 搞笑祝福
+          </button>
+        </div>
+        <div class="countdown">
+          <div class="countdown-title">生日狂欢倒计时</div>
+          <div id="countdownTimer">-- : -- : -- : --</div>
+        </div>
+        <footer>
+          <p>
+            <i class="fas fa-globe-americas"></i>
+            这份祝福穿越山海，专为你而来。来自你的网友。
+          </p>
+        </footer>
+      </div>
+    </div>
+    <script>
+      // 设置生日日期为今天的晚上
+      const birthdayDate = new Date()
+      birthdayDate.setHours(24, 0, 0, 0) // 设置为今天晚上8点
+
+      // 倒计时更新函数
+      function updateCountdown() {
+        const now = new Date().getTime()
+        const distance = birthdayDate - now
+
+        if (distance < 0) {
+          document.getElementById('countdownTimer').innerHTML =
+            "<span style='color:#e75480;'>生日快乐！就是现在！</span>"
+          return
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        )
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+        document.getElementById('countdownTimer').innerHTML =
+          `<span>${days}<span class="unit">天</span></span> : ` +
+          `<span>${hours}<span class="unit">时</span></span> : ` +
+          `<span>${minutes}<span class="unit">分</span></span> : ` +
+          `<span>${seconds}<span class="unit">秒</span></span>`
+      }
+
+      // 每秒更新一次倒计时
+      setInterval(updateCountdown, 1000)
+      updateCountdown() // 立即执行一次
+
+      // 祝福语库
+      const messages = {
+        heart: [
+          '虽然我们相识于网络，但这份祝福的心意无比真实。愿你新的一岁，万事皆可期，所有美好都与你相遇。',
+          '感谢在茫茫互联网中与你相遇。愿你的快乐与年龄无关，愿你的纯真与经历无关。生日快乐，我最亲爱的网友！',
+          '愿你遍历山河，仍觉人间值得；愿你保持热爱，奔赴下一场山海。生日快乐。',
+        ],
+        simple: [
+          '生日快乐！祝你今天快乐，明天快乐，天天都快乐！',
+          '简单一句生日快乐，代表我最真诚的祝福。愿一切美好都围绕着你！',
+          '虽然祝福简单，但心意满分！生日快乐，愿你平安喜乐。',
+        ],
+        funny: [
+          '恭喜你离"退休"又近了一步！新的一岁，继续做网络上最靓的仔/女！生日快乐！',
+          '警告：今天是你的生日，你有权保持快乐，但你所说的每句"我好开心"都将成为日后的美好回忆！',
+          '又到一年一度地球公转纪念日！祝你生日快乐，多吃不胖，积极向上！',
+        ],
+      }
+
+      // 显示祝福语的函数
+      function showMessage(type) {
+        const msgArray = messages[type]
+        const randomMsg = msgArray[Math.floor(Math.random() * msgArray.length)]
+        const messageBox = document.getElementById('dynamicMessage')
+
+        // 添加淡出效果
+        messageBox.style.opacity = '0'
+        setTimeout(() => {
+          messageBox.innerHTML = `"${randomMsg}"`
+          messageBox.style.opacity = '1'
+        }, 300)
+      }
+
+      // 页面加载时随机显示一条祝福
+      window.onload = function () {
+        const types = ['heart', 'simple', 'funny']
+        const randomType = types[Math.floor(Math.random() * types.length)]
+        showMessage(randomType)
+      }
+    </script>
+  </body>
+</html>
+
